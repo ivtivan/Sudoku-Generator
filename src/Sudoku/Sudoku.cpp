@@ -11,8 +11,24 @@ Sudoku::Sudoku(const std::string& src) {
     }
 }
 
-std::string Sudoku::get_as_string_formated() const {
-    return "";
+std::string Sudoku::get_as_formated_grid() const {
+    std::string formated_grid;
+    for (uint8_t row = 0; row < SUDOKU_SIDE; ++row) {
+        for (uint8_t col = 0; col < SUDOKU_SIDE; ++col) {
+            formated_grid += '[' + get_tile_at(row, col) + "] ";
+        }
+        formated_grid += '\n';
+    }
+
+    return formated_grid;
+}
+
+uint8_t Sudoku::get_tile_at(uint8_t row, uint8_t col) const {
+    return tiles[row * SUDOKU_SIDE + col];
+}
+
+uint8_t& Sudoku::get_tile_at(uint8_t row, uint8_t col) {
+    return tiles[row * SUDOKU_SIDE + col];
 }
 
 std::ostream& operator<<(std::ostream& os, Sudoku sudoku) {
