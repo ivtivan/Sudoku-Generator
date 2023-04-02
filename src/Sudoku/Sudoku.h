@@ -4,12 +4,10 @@
 #include <array>
 #include <string>
 #include <cstdint>
+#include "../helpers.h"
 
 class Sudoku {
     private:
-        static constexpr uint8_t SUDOKU_SIDE = 9;
-        static constexpr uint8_t SUDOKU_TILES = SUDOKU_SIDE * SUDOKU_SIDE;
-
         std::array<uint8_t, SUDOKU_TILES> tiles;
 
         uint8_t& get_tile_at(uint8_t row, uint8_t col);

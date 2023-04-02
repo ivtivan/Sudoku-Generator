@@ -33,7 +33,7 @@ uint8_t& Sudoku::get_tile_at(uint8_t row, uint8_t col) {
 
 std::ostream& operator<<(std::ostream& os, Sudoku sudoku) {
     char* representation = sudoku.get_as_c_string();
-    os.write(representation, Sudoku::SUDOKU_TILES + 1 + 2);
+    os.write(representation, SUDOKU_TILES + 1 + 2);
     delete[] representation;
     return os;
 }
