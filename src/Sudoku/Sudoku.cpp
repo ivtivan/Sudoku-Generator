@@ -7,15 +7,16 @@ Sudoku::Sudoku() {
 
 Sudoku::Sudoku(const std::string& src) {
     for(uint8_t i = 0; i < SUDOKU_TILES; ++i) {
+        
         tiles[i] = src[i] - '0';
     }
 }
 
 std::string Sudoku::get_as_formated_grid() const {
-    std::string formated_grid;
+    std::string formated_grid = "";
     for (uint8_t row = 0; row < SUDOKU_SIDE; ++row) {
         for (uint8_t col = 0; col < SUDOKU_SIDE; ++col) {
-            formated_grid += '[' + get_tile_at(row, col) + "] ";
+            formated_grid += '[' + at(row, col) + "] ";
         }
         formated_grid += '\n';
     }
@@ -23,17 +24,17 @@ std::string Sudoku::get_as_formated_grid() const {
     return formated_grid;
 }
 
-uint8_t Sudoku::get_tile_at(uint8_t row, uint8_t col) const {
+uint8_t Sudoku::at(uint8_t row, uint8_t col) const {
     return tiles[row * SUDOKU_SIDE + col];
 }
 
-uint8_t& Sudoku::get_tile_at(uint8_t row, uint8_t col) {
+uint8_t& Sudoku::at(uint8_t row, uint8_t col) {
     return tiles[row * SUDOKU_SIDE + col];
 }
 
 std::ostream& operator<<(std::ostream& os, Sudoku sudoku) {
     char* representation = sudoku.get_as_c_string();
-    os.write(representation, SUDOKU_TILES + 1 + 2);
+    os.write(representation,  + 1 + 2);
     delete[] representation;
     return os;
 }
