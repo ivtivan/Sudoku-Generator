@@ -1,7 +1,7 @@
 GXX_FLAGS = -Wall  -Wextra -Wpedantic -Werror
 INCLUDE_DIRS = -Isrc
 RUN_SOURCES = $(shell find src -name "*.cpp")
-RUN_SOURCES_WINDOWS = $(cd src && dir src /b /s "*.cpp" cd && ../)
+RUN_SOURCES_WINDOWS = $(shell cd src && dir src /b /s "*.cpp" && cd ..)
 
 EXECUTABLE_RUN = sudoku_gen
 
@@ -20,3 +20,6 @@ run: compile_main
 
 clear:
 	@rm -rf $(EXECUTABLE_RUN)
+
+clear_windows:
+	@del $(EXECUTABLE_RUN).exe
