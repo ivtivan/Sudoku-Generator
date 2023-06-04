@@ -10,10 +10,9 @@ bool SudokuSolver::fill_by_bruteforce(Sudoku& sudoku) const{
         return true;
     }
 
-    uint8_t first_possible_value = sudoku.map_to_possible_value(get_random(Sudoku::SUDOKU_SIDE));
+    const uint8_t first_possible_value = sudoku.map_to_possible_value(get_random(Sudoku::SUDOKU_SIDE));
     uint8_t curr_possible_value = first_possible_value;
     do {
-        
         sudoku.set_at(first_empty, curr_possible_value);
 
         if (sudoku.is_validly_placed_at(first_empty)

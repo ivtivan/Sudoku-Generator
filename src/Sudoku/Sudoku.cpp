@@ -152,15 +152,16 @@ bool Sudoku::is_unique_in_square(uint8_t index) const {
 }
 
 uint8_t Sudoku::get_beginning_square_index(uint8_t index) const {
-    uint8_t beginning_row_index = get_beginning_row_index(index);
-    uint8_t beginning_col_index = get_beginning_col_index(index);
+    const uint8_t beginning_row_index = get_beginning_row_index(index);
+    const uint8_t beginning_col_index = get_beginning_col_index(index);
 
-    uint8_t beginning_square_row =
-        (beginning_row_index / SQUARE_SIDE) * SQUARE_SIDE;
-    uint8_t beginning_square_col =
+    const uint8_t square_starting_row =
+        (beginning_row_index / (SUDOKU_SIDE * SQUARE_SIDE))
+            * SQUARE_SIDE;
+    const uint8_t square_starting_col =
         (beginning_col_index / SQUARE_SIDE) * SQUARE_SIDE;
 
-    return map_row_col_to_index(beginning_square_row, beginning_square_col);
+    return map_row_col_to_index(square_starting_row, square_starting_col);
 }
 
 uint8_t Sudoku::map_to_possible_value(uint8_t src) const {
