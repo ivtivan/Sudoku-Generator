@@ -2,7 +2,7 @@
 #include "helper.hpp"
 
 SudokuGenerator::SudokuGenerator() : sudoku(), solver(),
-    pairs_to_try_reset(), uniques_to_try_reset(), tiles_reset(0) {
+    pairs_still_not_reset(), uniques_still_not_reset() {
     ;
 }
 
@@ -20,29 +20,33 @@ Sudoku SudokuGenerator::generate_sudoku() {
 void SudokuGenerator::reset_tiles() {
     reset_pairs();
     reset_uniques();
+    sudoku.set_num_givens(uniques_still_not_reset.size());
 }
 
 void SudokuGenerator::reset_pairs() {
-    setup_pairs_to_try_reset();
+    setup_pairs_still_not_reset();
+    std::set<uint8_t> pairs_to_try_reset = pairs_still_not_reset;
     uint8_t num_left_to_try_reset = pairs_to_try_reset.size();
     bool is_reset;
 
     while (num_left_to_try_reset != 0) {
-        uint8_t index_to_erase = get_random(num_left_to_try_reset);
-        is_reset = try_reset_pair(index_to_erase);
+        uint8_t index_to_reset = get_random(num_left_to_try_reset);
+        auto iterator_to_reset = pairs_to_try_reset.begin();
+        std::advance(iterator_to_reset, index_to_reset);
+        is_reset = try_reset_pair(*iterator_to_reset);
         if (is_reset) {
-            tiles_reset++;
+            pairs_still_not_reset.erase(*iterator_to_reset);
         }
 
-        pairs_to_try_reset.erase(index_to_erase);
+        pairs_to_try_reset.erase(*iterator_to_reset);
         num_left_to_try_reset--;
     }
 }
 
-void SudokuGenerator::setup_pairs_to_try_reset() {
+void SudokuGenerator::setup_pairs_still_not_reset() {
     for (uint8_t curr_pair_index = 0; curr_pair_index <
         (Sudoku::SUDOKU_TILES + 1) / 2; ++curr_pair_index) {
-            pairs_to_try_reset.insert(curr_pair_index);
+            pairs_still_not_reset.insert(curr_pair_index);
     }
 }
 
@@ -79,27 +83,30 @@ uint8_t SudokuGenerator::get_pair_second_el(uint8_t pair_index) const {
 }
 
 void SudokuGenerator::reset_uniques() {
-    setup_uniques_to_try_reset();
+    setup_uniques_still_not_reset();
+    std::set<uint8_t> uniques_to_try_reset = uniques_still_not_reset;
     uint8_t num_left_to_try_reset = uniques_to_try_reset.size();
     bool is_reset;
 
     while (num_left_to_try_reset != 0) {
-        uint8_t index_to_erase = get_random(num_left_to_try_reset);
-        is_reset = try_reset_unique(index_to_erase);
+        uint8_t index_to_reset = get_random(num_left_to_try_reset);
+        auto iterator_to_reset = uniques_to_try_reset.begin();
+        std::advance(iterator_to_reset, index_to_reset);
+        is_reset = try_reset_unique(*iterator_to_reset);
         if (is_reset) {
-            tiles_reset++;
+            uniques_still_not_reset.erase(*iterator_to_reset);
         }
 
-        uniques_to_try_reset.erase(index_to_erase);
+        uniques_to_try_reset.erase(*iterator_to_reset);
         num_left_to_try_reset--;
     }
     
 }
 
-void SudokuGenerator::setup_uniques_to_try_reset() {
-    for (uint8_t pair_index : pairs_to_try_reset) {
-        uniques_to_try_reset.insert(get_pair_first_el(pair_index));
-        uniques_to_try_reset.insert(get_pair_second_el(pair_index));
+void SudokuGenerator::setup_uniques_still_not_reset() {
+    for (uint8_t pair_index : pairs_still_not_reset) {
+        uniques_still_not_reset.insert(get_pair_first_el(pair_index));
+        uniques_still_not_reset.insert(get_pair_second_el(pair_index));
     }
 }
 

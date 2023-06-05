@@ -39,7 +39,7 @@ uint8_t SudokuSolver::get_possible_value() const {
 }
 
 bool SudokuSolver::has_multiple_solutions(Sudoku sudoku) const {
-    return (count_solutions_one_or_more(sudoku) != 1);
+    return (count_solutions_one_or_more(sudoku) > 1);
 }
 
 uint8_t SudokuSolver::count_solutions_one_or_more(Sudoku sudoku) const {
@@ -56,12 +56,11 @@ uint8_t SudokuSolver::count_solutions_one_or_more(Sudoku sudoku) const {
     do {
         sudoku.set_at(first_empty, curr_possible_value);
 
-        if (sudoku.is_validly_placed_at(first_empty)
-            && has_multiple_solutions(sudoku)) {
-                solutions_count++;
-                if (solutions_count > 1) {
-                    return solutions_count;
-                }
+        if (sudoku.is_validly_placed_at(first_empty)) {
+            solutions_count += count_solutions_one_or_more(sudoku);
+            if (solutions_count > 1) {
+                return solutions_count;
+            }
         }
 
         sudoku.reset_at(first_empty);

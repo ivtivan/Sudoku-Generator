@@ -1,10 +1,18 @@
 #include "Sudoku.hpp"
 #include <algorithm>
 
-Sudoku::Sudoku() {
+Sudoku::Sudoku() : num_givens(0) {
     for(uint8_t i = 0; i < SUDOKU_TILES; ++i) {
         tiles[i] = EMPTY_TILE;
     }
+}
+
+void Sudoku::set_num_givens(uint8_t num_givens) {
+    this->num_givens = num_givens;
+}
+
+uint8_t Sudoku::get_num_givens() const {
+    return num_givens;
 }
 
 std::string Sudoku::get_as_formated_grid() const {

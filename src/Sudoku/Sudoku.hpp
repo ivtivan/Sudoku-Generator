@@ -13,6 +13,9 @@ class Sudoku {
 
         Sudoku();
 
+        void set_num_givens(uint8_t num_givens);
+        uint8_t get_num_givens() const;
+
         uint8_t at(uint8_t row, uint8_t col) const;
         uint8_t at(uint8_t index) const;
 
@@ -31,6 +34,7 @@ class Sudoku {
 
     private:
         static constexpr uint8_t EMPTY_TILE = 0;
+        uint8_t num_givens;
 
         std::array<uint8_t, SUDOKU_TILES> tiles;
 
