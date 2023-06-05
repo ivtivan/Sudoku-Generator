@@ -164,7 +164,7 @@ uint8_t Sudoku::get_beginning_square_index(uint8_t index) const {
     return map_row_col_to_index(square_starting_row, square_starting_col);
 }
 
-uint8_t Sudoku::map_to_possible_value(uint8_t src) const {
+uint8_t Sudoku::map_to_possible_value(uint8_t src) {
     return src % SUDOKU_SIDE + 1;
 }
 

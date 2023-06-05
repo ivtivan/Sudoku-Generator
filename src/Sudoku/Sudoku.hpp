@@ -25,7 +25,7 @@ class Sudoku {
         bool is_empty_at(uint8_t index) const;
         bool is_validly_placed_at(uint8_t index) const;
 
-        uint8_t map_to_possible_value(uint8_t src) const;
+        static uint8_t map_to_possible_value(uint8_t src);
 
         friend std::ostream& operator<<(std::ostream& os, Sudoku sudoku);
 
