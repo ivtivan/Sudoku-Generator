@@ -16,6 +16,8 @@ class Sudoku {
         void set_num_givens(uint8_t num_givens);
         uint8_t get_num_givens() const;
 
+        bool is_empty() const;
+
         uint8_t at(uint8_t row, uint8_t col) const;
         uint8_t at(uint8_t index) const;
 

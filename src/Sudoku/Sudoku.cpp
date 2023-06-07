@@ -15,6 +15,11 @@ uint8_t Sudoku::get_num_givens() const {
     return num_givens;
 }
 
+bool Sudoku::is_empty() const {
+    return get_num_givens() == 0;
+}
+
+
 std::string Sudoku::get_as_formated_grid() const {
     std::string formated_grid = "";
     
