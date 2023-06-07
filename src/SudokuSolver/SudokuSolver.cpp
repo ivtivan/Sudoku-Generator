@@ -31,7 +31,7 @@ bool SudokuSolver::fill_by_bruteforce() const {
 
 int8_t SudokuSolver::find_empty() const {
     uint8_t index = 0;
-    while (index < Sudoku::SUDOKU_TILES) {
+    while (index < Sudoku::get_num_sudoku_tiles()) {
         if (sudoku.is_empty_at(index)){
             return index;
         }
@@ -42,7 +42,7 @@ int8_t SudokuSolver::find_empty() const {
 }
 
 uint8_t SudokuSolver::get_possible_value() const {
-    return Sudoku::map_to_possible_value(get_random(Sudoku::SUDOKU_SIDE) + 1);
+    return Sudoku::map_to_possible_value(get_random(Sudoku::get_sudoku_side()) + 1);
 }
 
 uint8_t SudokuSolver::get_next_possible_value(uint8_t curr_possible_value) const {

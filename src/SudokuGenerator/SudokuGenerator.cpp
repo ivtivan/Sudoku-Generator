@@ -35,7 +35,7 @@ void SudokuGenerator::reset_pairs() {
 
 void SudokuGenerator::setup_pairs_to_reset() {
     for (uint8_t curr_pair_index = 0; curr_pair_index <
-        (Sudoku::SUDOKU_TILES + 1) / 2; ++curr_pair_index) {
+        (Sudoku::get_num_sudoku_tiles() + 1) / 2; ++curr_pair_index) {
             pairs_to_reset.insert(curr_pair_index);
     }
 }
@@ -89,7 +89,7 @@ uint8_t SudokuGenerator::get_pair_first_el(uint8_t pair_index) const {
 }
 
 uint8_t SudokuGenerator::get_pair_second_el(uint8_t pair_index) const {
-    return Sudoku::SUDOKU_TILES - pair_index - 1;
+    return Sudoku::get_num_sudoku_tiles() - pair_index - 1;
 }
 
 void SudokuGenerator::reset_uniques() {

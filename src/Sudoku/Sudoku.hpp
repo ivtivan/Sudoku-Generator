@@ -7,11 +7,11 @@
 
 class Sudoku {
     public:
-        static constexpr uint8_t SQUARE_SIDE = 3;
-        static constexpr uint8_t SUDOKU_SIDE = SQUARE_SIDE * SQUARE_SIDE;
-        static constexpr uint8_t SUDOKU_TILES = SUDOKU_SIDE * SUDOKU_SIDE;
-
         Sudoku();
+
+        static constexpr uint8_t get_subsquare_side() { return SUBSQUARE_SIDE; }
+        static constexpr uint8_t get_sudoku_side() { return SUDOKU_SIDE; }
+        static constexpr uint8_t get_num_sudoku_tiles() { return SUDOKU_TILES; }
 
         void set_num_givens(uint8_t num_givens);
         uint8_t get_num_givens() const;
@@ -33,6 +33,10 @@ class Sudoku {
         friend std::ostream& operator<<(std::ostream& os, Sudoku sudoku);
 
     private:
+        static constexpr uint8_t SUBSQUARE_SIDE = 3;
+        static constexpr uint8_t SUDOKU_SIDE = SUBSQUARE_SIDE * SUBSQUARE_SIDE;
+        static constexpr uint8_t SUDOKU_TILES = SUDOKU_SIDE * SUDOKU_SIDE;
+
         static constexpr uint8_t EMPTY_TILE = 0;
         uint8_t num_givens;
 
