@@ -1,6 +1,8 @@
 #ifndef SUDOKU_SOLVER_HPP
 #define SUDOKU_SOLVER_HPP
 
+#include <memory>
+
 #include "Sudoku/Sudoku.hpp"
 
 /*
@@ -9,13 +11,12 @@
 
 class SudokuSolver {
     public:
-        SudokuSolver(Sudoku& sudoku);
-
+        void set_sudoku(std::shared_ptr<Sudoku> sudoku);
         //  returns whether the whole sudoku was filled or not
         bool fill_by_bruteforce() const;
         bool finds_multiple_solutions() const;
     private:
-        Sudoku& sudoku;
+        std::shared_ptr<Sudoku> sudoku;
         //  returns signed, so that -1 can be returned when no empty tiles are found
         int8_t find_empty() const;
 

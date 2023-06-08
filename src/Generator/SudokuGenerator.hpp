@@ -4,8 +4,11 @@
 #include <cstdint>
 #include <set>
 
+#include <memory>
+
+#include "Solver/SudokuSolver.hpp"
 #include "Sudoku/Sudoku.hpp"
-#include "SudokuSolver/SudokuSolver.hpp"
+#include "sudoku_types.hpp"
 
 //  reset pairs of elements to creratet a symmetrical sudoku;
 //  then resets unique elements which can be rermoved
@@ -14,9 +17,10 @@ class SudokuGenerator {
     public:
         SudokuGenerator();
 
-        Sudoku generate_sudoku();
+        //  takes an empty board which has to be filled/generated and returned
+        std::unique_ptr<Sudoku> generate_sudoku(SUDOKU_TYPE type);
     private:
-        Sudoku sudoku;
+        std::shared_ptr<Sudoku> sudoku;
         SudokuSolver solver;    
         
         std::set<uint8_t> pairs_to_reset;

@@ -1,27 +1,34 @@
+#include "SudokuBuilder.hpp"
 #include "SudokuGenerator.hpp"
 #include "helper.hpp"
 
-SudokuGenerator::SudokuGenerator() : sudoku(), solver(sudoku),
+SudokuGenerator::SudokuGenerator() : sudoku(), solver(),
     pairs_to_reset(), uniques_to_reset() {
     ;
 }
 
 
-Sudoku SudokuGenerator::generate_sudoku() {
+std::unique_ptr<Sudoku> SudokuGenerator::generate_sudoku(SUDOKU_TYPE type) {
+    SudokuBuilder builder;
+    sudoku = builder.build_sudoku(type);
+    solver.set_sudoku(sudoku);
     bool is_fillable = solver.fill_by_bruteforce();
     
     if (is_fillable) {
         reset_tiles();
     }
+    else {
+        return nullptr;
+    }
 
-    return sudoku;
+    return std::make_unique<Sudoku>(*sudoku);
 }
 
 void SudokuGenerator::reset_tiles() {
     reset_pairs();
     reset_uniques();
     
-    sudoku.set_num_givens(uniques_to_reset.size());
+    sudoku->set_num_givens(uniques_to_reset.size());
 }
 
 void SudokuGenerator::reset_pairs() {
@@ -64,11 +71,11 @@ bool SudokuGenerator::try_reset_pair(uint8_t pair_index) {
     uint8_t first_el_index = get_pair_first_el(pair_index);
     uint8_t second_el_index = get_pair_second_el(pair_index);
 
-    uint8_t original_value_first_el = sudoku.at(first_el_index);
-    uint8_t original_value_second_el = sudoku.at(second_el_index);
+    uint8_t original_value_first_el = sudoku->at(first_el_index);
+    uint8_t original_value_second_el = sudoku->at(second_el_index);
 
-    sudoku.reset_at(first_el_index);
-    sudoku.reset_at(second_el_index);
+    sudoku->reset_at(first_el_index);
+    sudoku->reset_at(second_el_index);
 
     if (solver.finds_multiple_solutions()) {
         restore_tile_at_to(first_el_index, original_value_first_el);
@@ -81,7 +88,7 @@ bool SudokuGenerator::try_reset_pair(uint8_t pair_index) {
 }
 
 void SudokuGenerator::restore_tile_at_to(uint8_t index, uint8_t original_value) {
-    sudoku.set_at(index, original_value);
+    sudoku->set_at(index, original_value);
 }
 
 uint8_t SudokuGenerator::get_pair_first_el(uint8_t pair_index) const {
@@ -120,9 +127,9 @@ std::set<uint8_t> SudokuGenerator::reset_random_unique(std::set<uint8_t> uniques
 }
 
 bool SudokuGenerator::try_reset_unique(uint8_t index) {
-    uint8_t original_value = sudoku.at(index);
+    uint8_t original_value = sudoku->at(index);
 
-    sudoku.reset_at(index);
+    sudoku->reset_at(index);
 
     if (solver.finds_multiple_solutions()) {
         restore_tile_at_to(index, original_value);

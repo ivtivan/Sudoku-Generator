@@ -1,9 +1,11 @@
 #include <iostream>
-#include "ParametersParsing/param_parsing.hpp"
-#include "SudokuGenerator/SudokuGenerator.hpp"
+#include <memory>
 
-Sudoku generate_sudoku_from_params(parsed_params params);
-void print_sudoku_data(Sudoku sudoku);
+#include "Generator/SudokuGenerator.hpp"
+#include "ParametersParsing/param_parsing.hpp"
+
+std::unique_ptr<Sudoku> generate_sudoku_from_params(parsed_params params);
+void print_sudoku_data(std::unique_ptr<Sudoku> sudoku);
 
 int main(int argc, char** argv) {    
     parsed_params params = parse_params(argc, argv);
@@ -16,23 +18,26 @@ int main(int argc, char** argv) {
         return 0;
     }
     
-    Sudoku sudoku = generate_sudoku_from_params(params);
-    print_sudoku_data(sudoku);
+    auto sudoku = generate_sudoku_from_params(params);
+    print_sudoku_data(std::move(sudoku));
     return 0;
 }
 
-Sudoku generate_sudoku_from_params(parsed_params params) {
-    Sudoku sudoku;
-    while (sudoku.get_num_givens() > params.max_givens || sudoku.is_empty()) {
+std::unique_ptr<Sudoku> generate_sudoku_from_params(parsed_params params) {
+    auto sudoku = std::make_unique<Sudoku>();
+    while (sudoku->get_num_givens() > params.max_givens || sudoku->is_empty()) {
         SudokuGenerator generator;
-        sudoku = generator.generate_sudoku();
+        sudoku = generator.generate_sudoku(params.type);
+        if (!sudoku) {
+            return nullptr;
+        }
     }
 
     return sudoku;
 }
 
-void print_sudoku_data(Sudoku sudoku) {
+void print_sudoku_data(std::unique_ptr<Sudoku> sudoku) {
     std::cout << "Generated sudoku with "
-        << (int)sudoku.get_num_givens() << " givens.\n\n";
-    std::cout << sudoku << "\n";
+        << (int)sudoku->get_num_givens() << " givens.\n\n";
+    std::cout << std::move(sudoku) << "\n";
 }

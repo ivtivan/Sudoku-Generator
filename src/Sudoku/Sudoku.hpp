@@ -3,11 +3,14 @@
 
 #include <array>
 #include <cstdint>
+#include <memory>
 #include <string>
 
 class Sudoku {
     public:
         Sudoku();
+        Sudoku(const Sudoku& other) = default;
+        Sudoku& operator=(const Sudoku& other) = default;
 
         static constexpr uint8_t get_subsquare_side() { return SUBSQUARE_SIDE; }
         static constexpr uint8_t get_sudoku_side() { return SUDOKU_SIDE; }
@@ -28,12 +31,16 @@ class Sudoku {
 
         //  a tile is empty if it's value is 0
         bool is_empty_at(uint8_t index) const;
-        bool is_validly_placed_at(uint8_t index) const;
+        virtual bool is_validly_placed_at(uint8_t index) const;
 
         static uint8_t map_to_possible_value(uint8_t src);
 
-        friend std::ostream& operator<<(std::ostream& os, Sudoku sudoku);
+        friend std::ostream& operator<<(std::ostream& os, std::unique_ptr<Sudoku> sudoku);
 
+    protected:
+        uint8_t get_row(uint8_t index) const;
+        uint8_t get_col(uint8_t index) const;
+        uint8_t map_row_col_to_index(uint8_t row, uint8_t col) const;
     private:
         static constexpr uint8_t SUBSQUARE_SIDE = 3;
         static constexpr uint8_t SUDOKU_SIDE = SUBSQUARE_SIDE * SUBSQUARE_SIDE;
@@ -51,7 +58,6 @@ class Sudoku {
         void append_col_break(std::string& string_representation) const;
         char map_tile_value_to_char(uint8_t row, uint8_t col) const;
 
-        uint8_t map_row_col_to_index(uint8_t row, uint8_t col) const;
         uint8_t get_beginning_row_index(uint8_t index) const;
         uint8_t get_beginning_col_index(uint8_t index) const;
         uint8_t get_beginning_square_index(uint8_t index) const;

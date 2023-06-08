@@ -122,7 +122,11 @@ bool Sudoku::is_unique_in_row(uint8_t index) const {
 }
 
 uint8_t Sudoku::get_beginning_row_index(uint8_t index) const {
-    return (index / get_sudoku_side()) * get_sudoku_side();
+    return get_row(index) * get_sudoku_side();
+}
+
+uint8_t Sudoku::get_row(uint8_t index) const {
+    return index / get_sudoku_side();
 }
 
 bool Sudoku::is_unique_in_col(uint8_t index) const {
@@ -139,6 +143,10 @@ bool Sudoku::is_unique_in_col(uint8_t index) const {
 }
 
 uint8_t Sudoku::get_beginning_col_index(uint8_t index) const {
+    return get_col(index); //  implementation might change 
+}
+
+uint8_t Sudoku::get_col(uint8_t index) const {
     return index % get_sudoku_side();
 }
 
@@ -181,7 +189,7 @@ uint8_t Sudoku::map_to_possible_value(uint8_t src) {
     return src % get_sudoku_side() + 1;
 }
 
-std::ostream& operator<<(std::ostream& os, Sudoku sudoku) {
-    os << sudoku.get_as_formated_grid();
+std::ostream& operator<<(std::ostream& os, std::unique_ptr<Sudoku> sudoku) {
+    os << sudoku->get_as_formated_grid();
     return os;
 }
