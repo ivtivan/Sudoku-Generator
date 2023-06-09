@@ -11,19 +11,6 @@ bool SudokuX::is_validly_placed_at(uint8_t index) const {
     return are_general_rules_satified;
 }
 
-inline bool SudokuX::is_on_diagonal(uint8_t index) const {
-    return is_on_diagonal_from_u_l(index)
-        || is_on_diagonal_from_u_r(index);
-}
-
-inline bool SudokuX::is_on_diagonal_from_u_l(uint8_t index) const {
-    return get_col(index) == get_row(index);
-}
-
-inline bool SudokuX::is_on_diagonal_from_u_r(uint8_t index) const {
-    return get_row(index) == get_sudoku_side() - get_col(index) - 1;
-}
-
 bool SudokuX::is_unique_in_diagonal(uint8_t index) const {
     bool is_unique = true;
     if (is_on_diagonal_from_u_l(index)) {

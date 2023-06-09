@@ -1,4 +1,4 @@
-#include "SudokuBuilder.hpp"
+#include "SudokuFactory.hpp"
 #include "SudokuGenerator.hpp"
 #include "helper.hpp"
 
@@ -9,8 +9,8 @@ SudokuGenerator::SudokuGenerator() : sudoku(), solver(),
 
 
 std::unique_ptr<Sudoku> SudokuGenerator::generate_sudoku(SUDOKU_TYPE type) {
-    SudokuBuilder builder;
-    sudoku = builder.build_sudoku(type);
+    SudokuFactory builder;
+    sudoku = builder.get_sudoku(type);
     solver.set_sudoku(sudoku);
     bool is_fillable = solver.fill_by_bruteforce();
     

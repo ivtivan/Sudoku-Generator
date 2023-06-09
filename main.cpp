@@ -28,9 +28,6 @@ std::unique_ptr<Sudoku> generate_sudoku_from_params(parsed_params params) {
     while (sudoku->get_num_givens() > params.max_givens || sudoku->is_empty()) {
         SudokuGenerator generator;
         sudoku = generator.generate_sudoku(params.type);
-        if (!sudoku) {
-            return nullptr;
-        }
     }
 
     return sudoku;
