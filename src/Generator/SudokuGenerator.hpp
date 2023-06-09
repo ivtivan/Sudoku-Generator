@@ -43,10 +43,10 @@ class SudokuGenerator {
         bool try_reset_pair(uint8_t pair_index);
         bool try_reset_unique(uint8_t index);
         
-        void restore_tile_at_to(uint8_t index, uint8_t original_value);
+        inline void restore_tile_at_to(uint8_t index, uint8_t original_value);
 
-        uint8_t get_pair_first_el(uint8_t pair_index) const;
-        uint8_t get_pair_second_el(uint8_t pair_index) const;
+        inline uint8_t get_pair_first_el(uint8_t pair_index) const;
+        inline uint8_t get_pair_second_el(uint8_t pair_index) const;
 };
 
 #endif

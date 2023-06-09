@@ -1,8 +1,6 @@
 #include "SudokuSolver.hpp"
 #include "helper.hpp"
 
-#include <iostream>
-
 void SudokuSolver::set_sudoku(std::shared_ptr<Sudoku> sudoku) {
     this->sudoku = sudoku;
 }

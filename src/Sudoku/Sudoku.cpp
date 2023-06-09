@@ -70,30 +70,6 @@ void Sudoku::append_col_break(std::string& string_representation) const {
     string_representation.append("| ");
 }
 
-uint8_t Sudoku::at(uint8_t row, uint8_t col) const {
-    return at(map_row_col_to_index(row, col));
-}
-
-uint8_t Sudoku::at(uint8_t index) const {
-    return tiles[index];
-}
-
-uint8_t Sudoku::map_row_col_to_index(uint8_t row, uint8_t col) const {
-    return row * get_sudoku_side() + col;
-}
-
-void Sudoku::set_at(uint8_t row, uint8_t col, uint8_t value) {
-    set_at(map_row_col_to_index(row, col), value);
-}
-
-void Sudoku::set_at(uint8_t index, uint8_t value) {
-    tiles[index] = value;
-}
-
-void Sudoku::reset_at(uint8_t index) {
-    tiles[index] = EMPTY_TILE;
-}
-
 bool Sudoku::is_empty_at(uint8_t index) const {
     if (at(index) == EMPTY_TILE) {
         return true;
@@ -121,14 +97,6 @@ bool Sudoku::is_unique_in_row(uint8_t index) const {
     return true;
 }
 
-uint8_t Sudoku::get_beginning_row_index(uint8_t index) const {
-    return get_row(index) * get_sudoku_side();
-}
-
-uint8_t Sudoku::get_row(uint8_t index) const {
-    return index / get_sudoku_side();
-}
-
 bool Sudoku::is_unique_in_col(uint8_t index) const {
     const uint8_t beginning_col_index = get_beginning_col_index(index);
     for (uint8_t curr_index = beginning_col_index; 
@@ -140,14 +108,6 @@ bool Sudoku::is_unique_in_col(uint8_t index) const {
     }
 
     return true;
-}
-
-uint8_t Sudoku::get_beginning_col_index(uint8_t index) const {
-    return get_col(index); //  implementation might change 
-}
-
-uint8_t Sudoku::get_col(uint8_t index) const {
-    return index % get_sudoku_side();
 }
 
 bool Sudoku::is_unique_in_square(uint8_t index) const {
@@ -183,10 +143,6 @@ uint8_t Sudoku::get_beginning_square_index(uint8_t index) const {
         (beginning_col_index / get_subsquare_side()) * get_subsquare_side();
 
     return map_row_col_to_index(square_starting_row, square_starting_col);
-}
-
-uint8_t Sudoku::map_to_possible_value(uint8_t src) {
-    return src % get_sudoku_side() + 1;
 }
 
 std::ostream& operator<<(std::ostream& os, std::unique_ptr<Sudoku> sudoku) {

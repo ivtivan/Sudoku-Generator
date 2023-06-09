@@ -87,15 +87,15 @@ bool SudokuGenerator::try_reset_pair(uint8_t pair_index) {
     return true;
 }
 
-void SudokuGenerator::restore_tile_at_to(uint8_t index, uint8_t original_value) {
+inline void SudokuGenerator::restore_tile_at_to(uint8_t index, uint8_t original_value) {
     sudoku->set_at(index, original_value);
 }
 
-uint8_t SudokuGenerator::get_pair_first_el(uint8_t pair_index) const {
+inline uint8_t SudokuGenerator::get_pair_first_el(uint8_t pair_index) const {
     return pair_index;
 }
 
-uint8_t SudokuGenerator::get_pair_second_el(uint8_t pair_index) const {
+inline uint8_t SudokuGenerator::get_pair_second_el(uint8_t pair_index) const {
     return Sudoku::get_num_sudoku_tiles() - pair_index - 1;
 }
 
