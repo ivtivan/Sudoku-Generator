@@ -1,12 +1,9 @@
 # Sudoku-Generator
 
 ## Introduction
-The idea of the project is to find a way to generate sudokus of different difficulty for personal use.
+Generates sudokus. Provides the possiblity to set a maximal number of givens.
 
-## Summarized
+## Future plans and problems
+It will be possible to generate Sudoku X, currently the returned sudoku X doesn't have an unique solution.
 
-## Usage
-
-## Ranking difficulty
-
-##
+Tests with GTest will be addded in the future (during semester breaks).
