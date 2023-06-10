@@ -28,7 +28,7 @@ class SudokuSolver {
         //  returns 0 if there is no solution
         uint8_t count_solutions_one_or_more() const;
 
-        uint8_t get_possible_value() const;
+        uint8_t get_random_possible_value() const;
         uint8_t get_next_possible_value(uint8_t curr_possible_value) const;
 };
 #endif

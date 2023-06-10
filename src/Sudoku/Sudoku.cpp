@@ -15,10 +15,42 @@ uint8_t Sudoku::get_num_givens() const {
     return num_givens;
 }
 
+uint8_t Sudoku::get_at(uint8_t row, uint8_t col) const {
+    return get_at(map_row_col_to_index(row, col));
+}
+
+uint8_t Sudoku::get_at(uint8_t index) const {
+    return tiles[index];
+}
+
+uint8_t Sudoku::map_row_col_to_index(uint8_t row, uint8_t col) const {
+    return row * get_sudoku_side() + col;
+}
+
+void Sudoku::set_at(uint8_t row, uint8_t col, uint8_t value) {
+    set_at(map_row_col_to_index(row, col), value);
+}
+
+void Sudoku::set_at(uint8_t index, uint8_t value) {
+    tiles[index] = value;
+}
+
+
+void Sudoku::reset_at(uint8_t index) {
+    tiles[index] = EMPTY_TILE;
+}
+
+uint8_t Sudoku::get_row(uint8_t index) const {
+    return index / get_sudoku_side();
+}
+
+uint8_t Sudoku::get_col(uint8_t index) const {
+    return index % get_sudoku_side();
+}
+
 bool Sudoku::is_empty() const {
     return get_num_givens() == 0;
 }
-
 
 std::string Sudoku::get_as_formated_grid() const {
     std::string formated_grid = "";
@@ -57,7 +89,7 @@ char Sudoku::map_tile_value_to_char(uint8_t row, uint8_t col) const {
         return ' ';
     }
 
-    return '0' + at(row, col);
+    return '0' + get_at(row, col);
 }
 
 void Sudoku::append_row_break(std::string& string_representation) const {
@@ -71,7 +103,7 @@ void Sudoku::append_col_break(std::string& string_representation) const {
 }
 
 bool Sudoku::is_empty_at(uint8_t index) const {
-    if (at(index) == EMPTY_TILE) {
+    if (get_at(index) == EMPTY_TILE) {
         return true;
     }
 
@@ -89,7 +121,7 @@ bool Sudoku::is_unique_in_row(uint8_t index) const {
     for (uint8_t curr_index = beginning_row_index;
         curr_index < beginning_row_index + get_sudoku_side(); ++curr_index) {
         if (curr_index != index 
-            && at(curr_index) == at(index)) {
+            && get_at(curr_index) == get_at(index)) {
                 return false;
         }
     }
@@ -97,17 +129,25 @@ bool Sudoku::is_unique_in_row(uint8_t index) const {
     return true;
 }
 
+uint8_t Sudoku::get_beginning_row_index(uint8_t index) const {
+    return get_row(index) * get_sudoku_side();
+}
+
 bool Sudoku::is_unique_in_col(uint8_t index) const {
     const uint8_t beginning_col_index = get_beginning_col_index(index);
     for (uint8_t curr_index = beginning_col_index; 
         curr_index < get_num_sudoku_tiles(); curr_index += get_sudoku_side()) {
         if (curr_index != index 
-            && at(curr_index) == at(index)) {
+            && get_at(curr_index) == get_at(index)) {
                 return false;
         }
     }
 
     return true;
+}
+
+uint8_t Sudoku::get_beginning_col_index(uint8_t index) const {
+    return get_col(index); //  implementation might change 
 }
 
 bool Sudoku::is_unique_in_square(uint8_t index) const {
@@ -123,7 +163,7 @@ bool Sudoku::is_unique_in_square(uint8_t index) const {
                         + curr_square_row_index * get_sudoku_side();
                     
                     if (curr_sudoku_index != index 
-                        && at(curr_sudoku_index) == at(index)) {
+                        && get_at(curr_sudoku_index) == get_at(index)) {
                             return false;
                     }
             }
@@ -148,4 +188,8 @@ uint8_t Sudoku::get_beginning_square_index(uint8_t index) const {
 std::ostream& operator<<(std::ostream& os, std::unique_ptr<Sudoku> sudoku) {
     os << sudoku->get_as_formated_grid();
     return os;
+}
+
+uint8_t Sudoku::map_to_possible_value(uint8_t src) {
+    return src % get_sudoku_side() + 1;
 }

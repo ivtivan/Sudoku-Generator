@@ -12,7 +12,7 @@ bool SudokuSolver::fill_by_bruteforce() const {
         return true;
     }
 
-    const uint8_t first_possible_value = get_possible_value();
+    const uint8_t first_possible_value = get_random_possible_value();
     uint8_t curr_possible_value = first_possible_value;
     do {
         bool is_possible = try_set_at(first_empty, curr_possible_value);
@@ -39,7 +39,7 @@ int8_t SudokuSolver::find_empty() const {
     return -1; //  no empty tiles found
 }
 
-uint8_t SudokuSolver::get_possible_value() const {
+uint8_t SudokuSolver::get_random_possible_value() const {
     return Sudoku::map_to_possible_value(get_random(Sudoku::get_sudoku_side()) + 1);
 }
 
@@ -72,7 +72,7 @@ uint8_t SudokuSolver::count_solutions_one_or_more() const {
     }
 
     uint8_t solutions_count = 0;
-    const uint8_t first_possible_value = get_possible_value();
+    const uint8_t first_possible_value = get_random_possible_value();
 
     uint8_t curr_possible_value = first_possible_value;
     do {

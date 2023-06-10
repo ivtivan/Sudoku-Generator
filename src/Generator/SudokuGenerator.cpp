@@ -71,8 +71,8 @@ bool SudokuGenerator::try_reset_pair(uint8_t pair_index) {
     uint8_t first_el_index = get_pair_first_el(pair_index);
     uint8_t second_el_index = get_pair_second_el(pair_index);
 
-    uint8_t original_value_first_el = sudoku->at(first_el_index);
-    uint8_t original_value_second_el = sudoku->at(second_el_index);
+    uint8_t original_value_first_el = sudoku->get_at(first_el_index);
+    uint8_t original_value_second_el = sudoku->get_at(second_el_index);
 
     sudoku->reset_at(first_el_index);
     sudoku->reset_at(second_el_index);
@@ -87,16 +87,16 @@ bool SudokuGenerator::try_reset_pair(uint8_t pair_index) {
     return true;
 }
 
-inline void SudokuGenerator::restore_tile_at_to(uint8_t index, uint8_t original_value) {
-    sudoku->set_at(index, original_value);
-}
-
-inline uint8_t SudokuGenerator::get_pair_first_el(uint8_t pair_index) const {
+uint8_t SudokuGenerator::get_pair_first_el(uint8_t pair_index) const {
     return pair_index;
 }
 
-inline uint8_t SudokuGenerator::get_pair_second_el(uint8_t pair_index) const {
+uint8_t SudokuGenerator::get_pair_second_el(uint8_t pair_index) const {
     return Sudoku::get_num_sudoku_tiles() - pair_index - 1;
+}
+
+void SudokuGenerator::restore_tile_at_to(uint8_t index, uint8_t original_value) {
+    sudoku->set_at(index, original_value);
 }
 
 void SudokuGenerator::reset_uniques() {
@@ -127,7 +127,7 @@ std::set<uint8_t> SudokuGenerator::reset_random_unique(std::set<uint8_t> uniques
 }
 
 bool SudokuGenerator::try_reset_unique(uint8_t index) {
-    uint8_t original_value = sudoku->at(index);
+    uint8_t original_value = sudoku->get_at(index);
 
     sudoku->reset_at(index);
 
