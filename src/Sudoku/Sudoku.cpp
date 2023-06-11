@@ -1,17 +1,19 @@
 #include "Sudoku.hpp"
 #include <algorithm>
 
-Sudoku::Sudoku() : num_givens(0) {
+Sudoku::Sudoku() {
     for(uint8_t i = 0; i < get_num_sudoku_tiles(); ++i) {
         tiles[i] = EMPTY_TILE;
     }
 }
 
-void Sudoku::set_num_givens(uint8_t num_givens) {
-    this->num_givens = num_givens;
-}
-
 uint8_t Sudoku::get_num_givens() const {
+    uint8_t num_givens;
+    for (uint8_t i = 0; i < SUDOKU_TILES; ++i) {
+        if (!is_empty_at(i)) {
+            ++num_givens;
+        }
+    }
     return num_givens;
 }
 
@@ -38,14 +40,6 @@ void Sudoku::set_at(uint8_t index, uint8_t value) {
 
 void Sudoku::reset_at(uint8_t index) {
     tiles[index] = EMPTY_TILE;
-}
-
-uint8_t Sudoku::get_row(uint8_t index) const {
-    return index / get_sudoku_side();
-}
-
-uint8_t Sudoku::get_col(uint8_t index) const {
-    return index % get_sudoku_side();
 }
 
 bool Sudoku::is_empty() const {
@@ -108,81 +102,6 @@ bool Sudoku::is_empty_at(uint8_t index) const {
     }
 
     return false;
-}
-
-bool Sudoku::is_validly_placed_at(uint8_t index) const {
-    return is_unique_in_row(index)
-        && is_unique_in_col(index)
-        && is_unique_in_square(index);
-}
-
-bool Sudoku::is_unique_in_row(uint8_t index) const {
-    const uint8_t beginning_row_index = get_beginning_row_index(index); 
-    for (uint8_t curr_index = beginning_row_index;
-        curr_index < beginning_row_index + get_sudoku_side(); ++curr_index) {
-        if (curr_index != index 
-            && get_at(curr_index) == get_at(index)) {
-                return false;
-        }
-    }
-
-    return true;
-}
-
-uint8_t Sudoku::get_beginning_row_index(uint8_t index) const {
-    return get_row(index) * get_sudoku_side();
-}
-
-bool Sudoku::is_unique_in_col(uint8_t index) const {
-    const uint8_t beginning_col_index = get_beginning_col_index(index);
-    for (uint8_t curr_index = beginning_col_index; 
-        curr_index < get_num_sudoku_tiles(); curr_index += get_sudoku_side()) {
-        if (curr_index != index 
-            && get_at(curr_index) == get_at(index)) {
-                return false;
-        }
-    }
-
-    return true;
-}
-
-uint8_t Sudoku::get_beginning_col_index(uint8_t index) const {
-    return get_col(index); //  implementation might change 
-}
-
-bool Sudoku::is_unique_in_square(uint8_t index) const {
-    const uint8_t beginning_square_index = get_beginning_square_index(index);
-    for (uint8_t curr_square_row_index = 0;
-        curr_square_row_index < get_subsquare_side(); ++curr_square_row_index) {
-            
-            for (uint8_t curr_square_col_index = 0;
-                curr_square_col_index < get_subsquare_side(); ++curr_square_col_index) {
-                    
-                    const uint8_t curr_sudoku_index = beginning_square_index 
-                        + curr_square_col_index
-                        + curr_square_row_index * get_sudoku_side();
-                    
-                    if (curr_sudoku_index != index 
-                        && get_at(curr_sudoku_index) == get_at(index)) {
-                            return false;
-                    }
-            }
-    }
-
-    return true;
-}
-
-uint8_t Sudoku::get_beginning_square_index(uint8_t index) const {
-    const uint8_t beginning_row_index = get_beginning_row_index(index);
-    const uint8_t beginning_col_index = get_beginning_col_index(index);
-
-    const uint8_t square_starting_row =
-        (beginning_row_index / (get_sudoku_side() * get_subsquare_side()))
-            * get_subsquare_side();
-    const uint8_t square_starting_col =
-        (beginning_col_index / get_subsquare_side()) * get_subsquare_side();
-
-    return map_row_col_to_index(square_starting_row, square_starting_col);
 }
 
 std::ostream& operator<<(std::ostream& os, std::unique_ptr<Sudoku> sudoku) {

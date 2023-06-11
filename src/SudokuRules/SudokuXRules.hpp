@@ -1,10 +1,15 @@
-#ifndef SUDOKU_X_HPP
-#define SUDOKU_X_HPP
+#ifndef SUDOKU_X_RULES_HPP
+#define SUDOKU_X_RULES_HPP
 
-#include "Sudoku/Sudoku.hpp"
+#include <cstdint>
+#include <memory>
 
-class SudokuX: public Sudoku {
-    public: 
+#include "SudokuRules.hpp"
+
+class SudokuXRules : public SudokuRules {
+    public:
+        SudokuXRules(std::shared_ptr<Sudoku> sudoku);
+
         bool is_validly_placed_at(uint8_t index) const override;
     private:
         bool is_on_diagonal(uint8_t index) const;
@@ -16,7 +21,8 @@ class SudokuX: public Sudoku {
         bool is_unique_in_diagonal(uint8_t index) const;
 
         bool is_unique_in_diagonal_from_u_l(uint8_t index) const;
-        bool is_unique_in_diagonal_from_u_r(uint8_t index) const;
+        bool is_unique_in_diagonal_from_u_r(uint8_t index) const;   
+
 };
 
 #endif

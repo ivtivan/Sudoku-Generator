@@ -21,7 +21,7 @@ class SudokuGenerator {
         std::unique_ptr<Sudoku> generate_sudoku(SUDOKU_TYPE type);
     private:
         std::shared_ptr<Sudoku> sudoku;
-        SudokuSolver solver;    
+        std::unique_ptr<SudokuSolver> solver;    
         
         std::set<uint8_t> pairs_to_reset;
         std::set<uint8_t> uniques_to_reset;

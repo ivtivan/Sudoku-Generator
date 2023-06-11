@@ -1,19 +1,19 @@
-#include "SudokuFactory.hpp"
+#include "SudokuAndRulesMediator.hpp"
 #include "SudokuGenerator.hpp"
 #include "helper.hpp"
 
-SudokuGenerator::SudokuGenerator() : sudoku(), solver(),
+SudokuGenerator::SudokuGenerator() : sudoku(),
     pairs_to_reset(), uniques_to_reset() {
     ;
 }
 
 
 std::unique_ptr<Sudoku> SudokuGenerator::generate_sudoku(SUDOKU_TYPE type) {
-    SudokuFactory builder;
-    sudoku = builder.get_sudoku(type);
-    solver.set_sudoku(sudoku);
-    bool is_fillable = solver.fill_by_bruteforce();
-    
+    SudokuAndRulesMediator linked_sudoku_and_rules(type);
+    sudoku = linked_sudoku_and_rules.get_sudoku();
+    solver = std::make_unique<SudokuSolver>(linked_sudoku_and_rules);
+    bool is_fillable = solver->fill_by_bruteforce();
+
     if (is_fillable) {
         reset_tiles();
     }
@@ -27,8 +27,6 @@ std::unique_ptr<Sudoku> SudokuGenerator::generate_sudoku(SUDOKU_TYPE type) {
 void SudokuGenerator::reset_tiles() {
     reset_pairs();
     reset_uniques();
-    
-    sudoku->set_num_givens(uniques_to_reset.size());
 }
 
 void SudokuGenerator::reset_pairs() {
@@ -77,7 +75,7 @@ bool SudokuGenerator::try_reset_pair(uint8_t pair_index) {
     sudoku->reset_at(first_el_index);
     sudoku->reset_at(second_el_index);
 
-    if (solver.finds_multiple_solutions()) {
+    if (solver->finds_multiple_solutions()) {
         restore_tile_at_to(first_el_index, original_value_first_el);
         restore_tile_at_to(second_el_index, original_value_second_el);
         
@@ -131,7 +129,7 @@ bool SudokuGenerator::try_reset_unique(uint8_t index) {
 
     sudoku->reset_at(index);
 
-    if (solver.finds_multiple_solutions()) {
+    if (solver->finds_multiple_solutions()) {
         restore_tile_at_to(index, original_value);
         return false;
     }

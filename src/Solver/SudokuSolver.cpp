@@ -1,8 +1,10 @@
 #include "SudokuSolver.hpp"
 #include "helper.hpp"
 
-void SudokuSolver::set_sudoku(std::shared_ptr<Sudoku> sudoku) {
-    this->sudoku = sudoku;
+SudokuSolver::SudokuSolver(SudokuAndRulesMediator linked_sudoku_and_rules) :
+    sudoku(linked_sudoku_and_rules.get_sudoku()),
+    sudoku_rules(linked_sudoku_and_rules.get_sudoku_rules()) {
+    ;
 }
 
 bool SudokuSolver::fill_by_bruteforce() const {
@@ -51,7 +53,7 @@ uint8_t SudokuSolver::get_next_possible_value(uint8_t curr_possible_value) const
 bool SudokuSolver::try_set_at(uint8_t index, uint8_t value) const {
     sudoku->set_at(index, value);
 
-    if (sudoku->is_validly_placed_at(index)
+    if (sudoku_rules->is_validly_placed_at(index)
         && fill_by_bruteforce()) {
             return true;
     }
@@ -78,7 +80,7 @@ uint8_t SudokuSolver::count_solutions_one_or_more() const {
     do {
         sudoku->set_at(first_empty, curr_possible_value);
 
-        if (sudoku->is_validly_placed_at(first_empty)) {
+        if (sudoku_rules->is_validly_placed_at(first_empty)) {
             solutions_count += count_solutions_one_or_more();
             if (solutions_count > 1) {
                 sudoku->reset_at(first_empty);

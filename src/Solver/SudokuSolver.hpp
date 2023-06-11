@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "Sudoku/Sudoku.hpp"
+#include "Generator/SudokuAndRulesMediator.hpp"
 
 /*
 //  Works directly on the sudoku, passed to the constructor.
@@ -11,12 +11,13 @@
 
 class SudokuSolver {
     public:
-        void set_sudoku(std::shared_ptr<Sudoku> sudoku);
+        SudokuSolver(SudokuAndRulesMediator linked_sudoku_and_rules);
         //  returns whether the whole sudoku was filled or not
         bool fill_by_bruteforce() const;
         bool finds_multiple_solutions() const;
     private:
         std::shared_ptr<Sudoku> sudoku;
+        std::shared_ptr<SudokuRules> sudoku_rules;
         //  returns signed, so that -1 can be returned when no empty tiles are found
         int8_t find_empty() const;
 
